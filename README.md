@@ -33,10 +33,10 @@ Fully responsive, glassmorphism-style dark UI with an olive-green accent theme
 
 # Project Structure 
 .
-├── index.html      # Page structure and layout
-├── style.css       # Theme, layout, and animations
-├── script.js       # Budgeting logic, trackers, charts, and glossary data
-└── assets/         # Background image + currency note images (not included in repo)
+├── index.html      # Page structure and layout.
+├── style.css       # Theme, layout, and animations.
+├── script.js       # Budgeting logic, trackers, charts, and glossary data.
+└── assets/         # Background image + currency note images.
 
 # NOTE:
 The falling-money animation and background reference local image assets. Add your own currency note images and background image to the project root (or update the paths in style.css / script.js) for the visuals to render correctly.
