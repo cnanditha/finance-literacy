@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FinLiteracy | Smart Budgeting</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="bg-image"></div>
+    <div class="bg-overlay"></div>
+
+    <div id="money-container"></div>
+
+    <header class="fade-in">
+        <h1>FinLiteracy</h1>
+        <p>Master your money, plan your goals, and learn financial basics.</p>
+    </header>
+
+    <main class="container">
+        <section class="card animate-delay-1">
+            <h2>1. Income & Deductions</h2>
+            <div class="input-group">
+                <label>Monthly Income (₹):</label>
+                <input type="number" id="income" placeholder="e.g. 50000" onchange="calculateBudget()">
+            </div>
+            <div class="input-group">
+                <label>Total Monthly EMI / Loans (₹):</label>
+                <input type="number" id="loan" placeholder="e.g. 5000" onchange="calculateBudget()">
+            </div>
+            
+            <p id="net-income-warning" class="error hidden" style="margin-bottom: 1rem;">⚠️ Total Deductions (Loans + Insurance) cannot exceed Monthly Income!</p>
+            
+            <div class="divider"></div>
+            
+            <h3>Insurances</h3>
+            <p class="subtitle">Deducted before budgeting.</p>
+            <div class="input-row">
+                <input type="text" id="insurance-name" placeholder="Name (e.g. Health)">
+                <input type="number" id="insurance-amt" placeholder="Amount (₹)">
+            </div>
+            <button class="btn-primary" onclick="addInsurance()">Add Insurance</button>
+            <div id="insurance-list" class="item-list"></div>
+        </section>
+
+        <section class="card animate-delay-2">
+            <h2>2. The Budget Split</h2>
+            <p class="subtitle">Adjust your percentages for your Net Income.</p>
+            
+            <div class="sliders">
+                <label>Needs: <span class="badge badge-primary"><span id="needs-val">50</span>%</span></label>
+                <input type="range" id="needs-slider" min="10" max="80" value="50" class="slider">
+                
+                <label>Wants: <span class="badge badge-primary"><span id="wants-val">30</span>%</span></label>
+                <input type="range" id="wants-slider" min="10" max="80" value="30" class="slider">
+                
+                <label>Savings: <span class="badge badge-primary"><span id="savings-val">20</span>%</span></label>
+                <input type="range" id="savings-slider" min="0" max="80" value="20" class="slider">
+            </div>
+            
+            <p id="split-error" class="error hidden">Percentages must equal 100%!</p>
+            
+            <div class="btn-group mt-1">
+                <button class="btn-primary" onclick="calculateBudget()">Calculate Split</button>
+                <button class="btn-secondary" onclick="resetSplit()">Reset 50-30-20</button>
+            </div>
+
+            <div id="budget-results" class="results-box">
+                <div class="result-row total"><span>Net Usable Income:</span> <strong>₹<span id="net-income">0</span></strong></div>
+                <div class="result-row"><span>Needs Budget:</span> <strong>₹<span id="needs-amt">0</span></strong></div>
+                <div class="result-row"><span>Wants Budget:</span> <strong>₹<span id="wants-amt">0</span></strong></div>
+                <div class="result-row"><span>Savings Budget:</span> <strong>₹<span id="savings-amt">0</span></strong></div>
+            </div>
+        </section>
+
+        <section class="card tracker-card animate-delay-3">
+            <h2>3. Needs Tracker <span class="budget-limit" id="limit-needs">(Budget: ₹0)</span></h2>
+            <div class="input-row">
+                <input type="text" id="need-name" placeholder="E.g. Rent, Groceries">
+                <input type="number" id="need-amt" placeholder="Cost (₹)">
+            </div>
+            <button class="btn-secondary" onclick="addTrackerItem('needs')">Add Need</button>
+            <p id="needs-warning" class="error hidden">Exceeds your Needs budget!</p>
+            
+            <div class="visual-dashboard">
+                <div class="pie-chart" id="needs-pie"></div>
+                <div class="item-list" id="needs-list"></div>
+            </div>
+        </section>
+
+        <section class="card tracker-card animate-delay-4">
+            <h2>4. Wants Tracker <span class="budget-limit" id="limit-wants">(Budget: ₹0)</span></h2>
+            <div class="input-row">
+                <input type="text" id="want-name" placeholder="E.g. Dining Out">
+                <input type="number" id="want-amt" placeholder="Cost (₹)">
+            </div>
+            <button class="btn-secondary" onclick="addTrackerItem('wants')">Add Want</button>
+            <p id="wants-warning" class="error hidden">Exceeds your Wants budget!</p>
+            
+            <div class="visual-dashboard">
+                <div class="pie-chart" id="wants-pie"></div>
+                <div class="item-list" id="wants-list"></div>
+            </div>
+        </section>
+
+        <section class="card animate-delay-5">
+            <h2>5. Savings Goals <span class="budget-limit" id="limit-savings">(Budget: ₹0)</span></h2>
+            <div class="input-group">
+                <input type="text" id="goal-name" placeholder="Goal (e.g. Emergency Fund)">
+                <div class="input-row mt-half">
+                    <input type="number" id="goal-target" placeholder="Target (₹)">
+                    <input type="number" id="goal-monthly" placeholder="Monthly (₹)">
+                </div>
+            </div>
+            <button class="btn-secondary" onclick="addTrackerItem('goals')">Add Goal</button>
+            <p id="goals-warning" class="error hidden">Exceeds your Savings budget!</p>
+
+            <div id="goals-dashboard" class="hidden mt-1">
+                <div class="chart-bar-container">
+                    <div id="chart-bar" class="chart-bar"></div>
+                </div>
+                <div id="goals-list" class="item-list"></div>
+            </div>
+        </section>
+
+        <section class="card animate-delay-6">
+            <h2>6. Loan Terms Glossary</h2>
+            <div class="term-grid">
+                <button class="term-btn" onclick="openModal('Principal')">Principal</button>
+                <button class="term-btn" onclick="openModal('Interest Rate')">Interest Rate</button>
+                <button class="term-btn" onclick="openModal('Collateral')">Collateral</button>
+                <button class="term-btn" onclick="openModal('Amortization')">Amortization</button>
+                <button class="term-btn" onclick="openModal('Loan Tenure')">Loan Tenure</button>
+                <button class="term-btn" onclick="openModal('EMI')">EMI</button>
+                <button class="term-btn" onclick="openModal('Prepayment / Foreclosure')">Prepayment</button>
+                <button class="term-btn" onclick="openModal('Processing Fee')">Processing Fee</button>
+                <button class="term-btn" onclick="openModal('Credit Score')">Credit Score</button>
+                <button class="term-btn" onclick="openModal('Default')">Default</button>
+            </div>
+        </section>
+
+        <section class="card danger-card animate-delay-7">
+            <h2 class="danger-text">7. Danger Zone: Loan Sharks</h2>
+            <div class="term-grid">
+                <button class="term-btn danger-btn" onclick="openModal('Hidden Interest Rates')">Hidden Rates</button>
+                <button class="term-btn danger-btn" onclick="openModal('Daily or Weekly Collections')">Daily Collections</button>
+                <button class="term-btn danger-btn" onclick="openModal('Blank Cheques or Documents')">Blank Cheques</button>
+                <button class="term-btn danger-btn" onclick="openModal('Harassment Tactics')">Harassment</button>
+                <button class="term-btn danger-btn" onclick="openModal('Fake Loan Apps')">Fake Apps</button>
+                <button class="term-btn danger-btn" onclick="openModal('Excessive Penalties')">Excessive Penalties</button>
+                <button class="term-btn danger-btn" onclick="openModal('No Written Agreement')">No Agreement</button>
+                <button class="term-btn danger-btn" onclick="openModal('Rolling Loans (Debt Trap)')">Debt Trap</button>
+                <button class="term-btn protect-btn" onclick="openModal('How to Protect Yourself')">Protect Yourself</button>
+            </div>
+        </section>
+    </main>
+
+    <div id="term-modal" class="modal hidden">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2 id="modal-title">Term</h2>
+            <div id="modal-desc" class="modal-body"></div>
+        </div>
+    </div>
+
+    <div id="pie-tooltip" class="chart-tooltip hidden"></div>
+
+    <script src="script.js"></script>
+</body>
+</html>
