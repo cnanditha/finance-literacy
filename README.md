@@ -32,11 +32,27 @@ Scroll-triggered fade-in animations for each section.
 Fully responsive, glassmorphism-style dark UI with an olive-green accent theme
 
 # Project Structure 
-.
-├── index.html      # Page structure and layout.
-├── style.css       # Theme, layout, and animations.
-├── script.js       # Budgeting logic, trackers, charts, and glossary data.
-└── assets/         # Background image + currency note images.
+1. index.html      # Page structure and layout.
+2. style.css       # Theme, layout, and animations.
+3. script.js       # Budgeting logic, trackers, charts, and glossary data.
+4. assets/         # Background image + currency note images.
 
 # NOTE:
 The falling-money animation and background reference local image assets. Add your own currency note images and background image to the project root (or update the paths in style.css / script.js) for the visuals to render correctly.
+
+# Getting Started
+1. Clone the repository
+2. Add the required image assets (background image + rupee note images) referenced in style.css and script.js.
+3. Open index.html directly in your browser — no server or build step needed.
+
+# How to Use
+1. Enter your monthly income and loan/EMI amount
+2. Add any insurance premiums.
+3. Adjust the Needs / Wants / Savings sliders and click Calculate Split.
+4. Log expenses under the Needs and Wants trackers to see how you're pacing against budget.
+5. Add Savings Goals with a target and monthly contribution to track progress.
+6. Browse the Loan Terms Glossary and Danger Zone sections to learn how to borrow safely and spot predatory lenders.
+
+# Disclaimer
+
+This tool is for educational purposes only and does not constitute financial or legal advice. Figures and thresholds (e.g., interest rate ranges, penalty examples) are illustrative and may not reflect current market rates. Always consult a qualified financial advisor or your bank before making borrowing decisions.
